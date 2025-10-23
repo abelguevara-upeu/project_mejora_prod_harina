@@ -1,0 +1,35 @@
+flowchart TD
+%% Inicio desde proceso anterior
+    START([Grano listo para molienda<br/>desde Limpieza]) --> A2[Verificar disponibilidad<br/>de silos de grano limpio]
+
+%% Lane 1: Supervisor Línea de Molino
+subgraph SLM ["Supervisor Línea de Molino"]
+A2 --> A3{¿Silos<br/>disponibles?}
+A3 -->|No| T1{{⏰ Esperar<br/>disponibilidad}}
+T1 --> A3
+A3 -->|Sí| A5[Programar secuencia<br/>de molienda]
+A5 --> A6[Calibrar equipos<br/>de dosificación]
+A6 --> A7[Alimentar molinos con<br/>grano acondicionado]
+A7 --> A8[Monitorear flujo<br/>de alimentación]
+A8 --> A9{¿Flujo<br/>estable?}
+A9 -->|No| A10[Ajustar parámetros<br/>de alimentación]
+A10 --> A8
+A9 -->|Sí| T2{{⏱️ Timer<br/>15 min}}
+T2 --> A12[Controlar temperatura<br/>de proceso]
+end
+
+%% Lane 2: Jefatura de Aseg. Calidad
+subgraph JAC ["Jefatura de Aseg. Calidad"]
+A12 --> B1{¿Temperatura<br/>dentro de rango?}
+B1 -->|No| E1[🚨 Alerta de<br/>temperatura]
+E1 --> B3[Notificar desviación<br/>de temperatura]
+B1 -->|Sí| B4[Liberar proceso<br/>para siguiente etapa]
+end
+
+%% Lane 3: Mantenimiento
+subgraph MNT ["Mantenimiento"]
+B3 --> C1[Revisar sistema<br/>de enfriamiento]
+C1 --> A12
+end
+
+B4 --> CONT([Continúa a Control<br/>de Calidad en Molienda])

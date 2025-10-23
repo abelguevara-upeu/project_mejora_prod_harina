@@ -1,0 +1,47 @@
+flowchart TD
+%% Inicio desde procedimiento anterior
+    START2([Productos liberados desde<br/>Preparación y Dosificación]) --> D1[Sellar envases según<br/>especificaciones]
+
+%% Lane 1: Operador de Envasado
+subgraph OE2 ["Operador de Envasado"]
+D1 --> D2[Verificar integridad<br/>del sellado]
+D2 --> G2{¿Sellado<br/>íntegro?}
+G2 -->|No| D3[🔄 Resellar<br/>envase]
+D3 --> D2
+G2 -->|Sí| D4[Aplicar etiquetas y códigos<br/>de trazabilidad]
+D4 --> D5[Embalar productos<br/>terminados]
+end
+
+%% Lane 2: Control de Calidad Envasado
+subgraph CCE2 ["Control de Calidad Envasado"]
+D5 --> E1_QC[Inspeccionar calidad<br/>final del producto]
+E1_QC --> T3{{⏱️ Timer<br/>5 min}}
+T3 --> G3((Evaluación Final<br/>de Calidad))
+G3 -->|Producto Conforme| E2_QC[Aprobar lote<br/>terminado]
+G3 -->|Defecto Menor<br/>Corregible| E3_QC[Solicitar corrección<br/>de defectos]
+G3 -->|Producto No Conforme<br/>Rechazado| E4_QC[Rechazar lote<br/>completo]
+end
+
+%% Lane 3: Jefe de Envasado
+subgraph JE2 ["Jefe de Envasado"]
+E3_QC --> F1[Corregir defectos<br/>identificados]
+F1 --> E1_QC
+
+E4_QC --> F2[Segregar producto<br/>rechazado]
+F2 --> E5[🚨 Alerta de<br/>rechazo]
+E5 --> F3[Analizar causa<br/>del rechazo]
+end
+
+%% Lane 4: Almacén
+subgraph ALM ["Almacén"]
+E2_QC --> G1_ALM[Registrar lote en sistema<br/>de inventario]
+G1_ALM --> T4{{⏱️ Timer<br/>15 min}}
+T4 --> G2_ALM[Transferir a almacén de<br/>producto terminado]
+G2_ALM --> END2([🏁 Fin - Producto<br/>Terminado])
+end
+
+%% Lane 5: Gerencia de Planta
+subgraph GP ["Gerencia de Planta"]
+F3 --> H1[Implementar acciones<br/>correctivas]
+H1 --> END3[📊 Registro de<br/>No Conformidad]
+end

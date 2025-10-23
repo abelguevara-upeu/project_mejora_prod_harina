@@ -1,0 +1,40 @@
+flowchart TD
+%% Inicio desde proceso anterior
+    START([Harina aprobada desde<br/>Control de Calidad]) --> A1[Recibir harina aprobada<br/>desde Control de Calidad]
+
+%% Lane 1: Jefe de Envasado
+subgraph JE ["Jefe de Envasado"]
+A1 --> A2[Verificar disponibilidad de<br/>material de envasado]
+A2 --> G1{¿Material<br/>disponible?}
+G1 -->|No| A3[Solicitar material<br/>de envasado]
+A3 --> T1{{⏰ Esperar<br/>suministro}}
+T1 --> A2
+G1 -->|Sí| A4[Preparar líneas<br/>de envasado]
+A4 --> A5[Programar especificaciones<br/>por tipo de envase]
+end
+
+%% Lane 2: Operador de Envasado
+subgraph OE ["Operador de Envasado"]
+A5 --> B1[Calibrar equipos<br/>de dosificación]
+B1 --> T2{{⏱️ Timer<br/>10 min}}
+T2 --> B2{¿Calibración<br/>correcta?}
+B2 -->|No| B3[Recalibrar equipos<br/>de dosificación]
+B3 --> B1
+B2 -->|Sí| B4[Iniciar proceso de<br/>llenado automatizado]
+B4 --> B5[Monitorear peso<br/>y hermeticidad]
+end
+
+%% Lane 3: Control de Calidad Envasado
+subgraph CCE ["Control de Calidad Envasado"]
+B5 --> C1{¿Peso dentro<br/>de tolerancia?}
+C1 -->|No| E1[🚨 Alerta de<br/>desviación]
+E1 --> C2[Ajustar parámetros<br/>de dosificación]
+C2 --> B5
+C1 -->|Sí| C3{¿Hermeticidad<br/>correcta?}
+C3 -->|No| E2[🚨 Alerta de<br/>sellado]
+E2 --> C4[Revisar sistema<br/>de sellado]
+C4 --> B5
+C3 -->|Sí| C5[Liberar para<br/>siguiente etapa]
+end
+
+C5 --> END1([Continúa a Sellado<br/>y Etiquetado])
