@@ -321,7 +321,7 @@ def plot_scatter_humidity(data, output_dir):
     ax.grid(True, alpha=0.3)
     ax.legend(loc='upper left', fontsize=11)
 
-    # Anotación correlación - más grande y legible
+    # Anotación correlación - posicionada en esquina inferior derecha
     textstr = f'Correlación (r) = {r:.3f}\n'
     if abs(r) < 0.3:
         textstr += 'Correlación débil'
@@ -335,9 +335,9 @@ def plot_scatter_humidity(data, output_dir):
 
     textstr += f'\n\nEcuación:\ny = {a:.2f} + {b:.2f}×x'
 
-    props = dict(boxstyle='round', facecolor=color_fondo, alpha=0.7, edgecolor='black', linewidth=2)
-    ax.text(0.03, 0.97, textstr, transform=ax.transAxes, fontsize=12,
-            verticalalignment='top', bbox=props, fontweight='bold', family='monospace')
+    props = dict(boxstyle='round', facecolor='lightblue', alpha=0.8, edgecolor='gray', linewidth=1)
+    ax.text(0.97, 0.97, textstr, transform=ax.transAxes, fontsize=11,
+            verticalalignment='top', horizontalalignment='right', bbox=props)
 
     plt.tight_layout()
     plt.savefig(os.path.join(output_dir, 'grafico_scatter_humedad.png'), dpi=300, bbox_inches='tight')
