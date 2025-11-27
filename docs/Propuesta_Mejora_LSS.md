@@ -8,7 +8,7 @@
 
 ## INTRODUCCIÓN
 
-La propuesta de mejora de procesos tiene como finalidad aplicar modelos de mejora a través de herramientas Lean y Six Sigma. Las herramientas Lean responden a la pregunta ¿Es un problema de tiempo de ciclo / flujo de proceso?, mientras que la aplicación de herramientas Six Sigma responde a la pregunta ¿es un problema derivado de defectos /variaciones? Las herramientas de mejora se aplicaron al **proceso de molienda de trigo para producción de harina**.
+La propuesta de mejora de procesos tiene como finalidad aplicar modelos de mejora a través de herramientas Lean y Six Sigma. Las herramientas Lean responden a la pregunta ¿Es un problema de tiempo de ciclo / flujo de proceso?, mientras que la aplicación de herramientas Six Sigma responde a la pregunta 	 ¿es un problema derivado de defectos /variaciones? Las herramientas de mejora se aplicaron al **proceso de molienda de trigo para producción de harina**.
 
 Este documento establece los lineamientos necesarios para asegurar la satisfacción de los clientes, promover la mejora continua y demostrar la conformidad con los requisitos de la norma ISO 9001:2015. Asimismo, constituye una guía de referencia para la gestión de los procesos productivos de harina, asegurando el cumplimiento de estándares de inocuidad y buenas prácticas de manufactura.
 
@@ -229,20 +229,48 @@ Para el análisis de la viabilidad del proyecto de mejora se han considerado 4 i
 
 #### Análisis de Pareto (causas de variabilidad)
 
-**Datos de análisis de 200 lotes con variabilidad >15% sobre media:**
+Se generó un análisis Pareto a partir del archivo `data/minitab_exports/minitab_molienda_variabilidad.csv` (200 registros). La tabla y el gráfico resultante (adjuntos) muestran la contribución de las causas identificadas en los campos `motivo_parada` y `notas`, además de una categorización automática por humedad alta.
 
-| Causa identificada                   | Frecuencia | % Acumulado |
-| ------------------------------------ | ---------- | ----------- |
-| Falta de calibración equipos        | 45         | 45%         |
-| Ausencia de SOP estandarizado        | 28         | 73%         |
-| Paradas por mantenimiento correctivo | 12         | 85%         |
-| Humedad variable materia prima       | 8          | 93%         |
-| Operadores sin capacitación         | 7          | 100%        |
+| Causa identificada             | Frecuencia | Porcentaje | % Acumulado |
+| ------------------------------ | ----------:| ----------:| -----------:|
+| Otros motivos                  |        171 |      85.50%|      85.50% |
+| Humedad alta                   |         18 |       9.00%|      94.50% |
+| Defectos detectados            |          4 |       2.00%|      96.50% |
+| Falla eléctrica                |          3 |       1.50%|      98.00% |
+| Mantenimiento correctivo       |          2 |       1.00%|      99.00% |
+| Calibración                    |          1 |       0.50%|      99.50% |
+| Atasco / bloqueo               |          1 |       0.50%|     100.00% |
 
-**Conclusión Pareto:** El 73% de la variabilidad se explica por 2 causas principales:
+![](../data/figs/pareto_molienda.png)
 
-1. Falta de calibración de equipos
-2. Ausencia de SOP estandarizado
+Observaciones clave:
+
+- Una gran parte (85.5%) queda en **"Otros motivos"**, lo que indica que en muchos registros no se completó el campo `motivo_parada` o `notas` con una causa estandarizada. Recomendamos estandarizar el registro de eventos para poder desagregar correctamente las causas raíz.
+- **Humedad alta** representa el segundo contribuyente (9%), por lo que ampliar controles sobre humedad de materia prima y/o rechazos tempranos puede reducir variabilidad.
+- Las causas directamente atribuibles a equipos (calibración, mantenimiento, fallas eléctricas) aparecen con baja frecuencia registrada en el CSV — esto sugiere que hay pocas entradas explícitas o que se registran como texto libre.
+
+Conclusión Pareto adaptada al dataset: actualmente la mayor parte de la variabilidad no está etiquetada con una causa estandarizada ("Otros motivos"). Además de atacar las causas técnicas (calibración y mantenimiento), es prioritario mejorar la calidad del registro de eventos para que futuros análisis Pareto dirijan acciones con mayor precisión.
+
+#### Matriz para desarrollar Pareto
+
+La siguiente matriz utiliza la reclasificación automática de los 200 registros y aplica una valoración simple (Impacto 1-9, Probabilidad de solución 1-9). El campo *Producto* se calculó como: `Frecuencia × (Impacto × Probabilidad)` y la columna *Participación* indica el porcentaje del producto frente al total.
+
+| Causa a Raíz | Descripción | Frecuencia del Evento | Impacto (1-9) | Probabilidad de solución (1-9) | Producto | Participación |
+|--------------|-------------|----------------------:|--------------:|-------------------------------:|--------:|--------------:|
+| Sin registrar | Evento no estandarizado / texto libre en `motivo_parada` o `notas` | 171 | 7 | 8 | 9,576 | 88.4% |
+| Humedad alta | Humedad de materia prima elevada (≥15%) detectada en registro | 18 | 8 | 6 | 864 | 8.0% |
+| Defectos detectados | Producto con defectos detectados por control de calidad | 4 | 6 | 5 | 120 | 1.1% |
+| Falla eléctrica | Interrupciones por fallas eléctricas registradas | 3 | 9 | 4 | 108 | 1.0% |
+| Mantenimiento correctivo | Paradas para mantenimiento no programado / correctivo | 2 | 8 | 5 | 80 | 0.7% |
+| Calibración | Incidencias relacionadas a falta/retardo en calibración | 1 | 9 | 6 | 54 | 0.5% |
+| Atasco / bloqueo | Atascos o bloqueos del equipo (atasco, bloqueo) | 1 | 7 | 5 | 35 | 0.3% |
+
+**Total producto:** 10,837 (100%)
+
+Notas:
+- La categoría **Sin registrar** concentra la mayor parte del peso del Pareto (88%). Esto confirma que el primer paso de la mejora debe ser estandarizar y obligar el registro estructurado de `motivo_parada` y `notas` para poder desagregar y priorizar causas reales.
+- Los valores de *Impacto* y *Probabilidad* son propuestas basadas en criterio técnico para priorizar acciones; pueden ajustarse con el equipo antes de convertir la matriz en plan de acción.
+- Una vez que la categoría "Sin registrar" se reduzca mediante mejor registro, se recomienda volver a generar el Pareto para identificar las verdaderas causas raíz (calibración, mantenimiento, fallas eléctricas, humedad, etc.).
 
 ---
 
