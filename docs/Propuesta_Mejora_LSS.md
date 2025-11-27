@@ -640,6 +640,30 @@ Stat > Control Charts > Variables Charts for Individuals > I-MR
 
 ---
 
+### Proyecciones alternativas (σ objetivo)
+
+A continuación se muestran proyecciones métricas para tres escenarios centrados en `Target = 120 min` y especificaciones `LIE = 100 min` / `LSE = 140 min`.
+
+| Escenario (σ) | Cp (≈) | Cpk (≈) | % Lotes fuera de especificación |
+|---------------:|:------:|:------:|:-------------------------------:|
+| Simulación actual (σ=7.37) | 0.90 | 0.90 | 0.665% |
+| Objetivo moderado (σ=5.00) | 1.33 | 1.33 | 0.0063% |
+| Objetivo agresivo (σ=4.00)  | 1.67 | 1.67 | 0.000057% |
+
+Notas:
+- Los valores de `Cp` y `Cpk` se calculan con las fórmulas estándar: `Cp = (USL-LSL)/(6·σ)` y `Cpk = min((USL-μ)/(3·σ),(μ-LSL)/(3·σ))`, asumiendo proceso centrado en `μ = 120`.
+- Con σ ≈ 7.4 (simulado), el proceso reduce defectos pero **no alcanza** Cp/Cpk ≥ 1.33. Para conseguir Cp ≈ 1.67 (valor mostrado en otra tabla del documento) se requeriría σ ≈ 4.
+- Para lograr σ = 4 se necesitan intervenciones adicionales (ver recomendaciones cortas abajo).
+
+Acciones necesarias para alcanzar objetivos agresivos (σ ≤ 5):
+- Control automático y/o sensores para reducir variabilidad operativa (por ejemplo, control cerrado PID sobre velocidad, temperatura).
+- Calibración más frecuente y mantenimiento preventivo (diaria/semanal según criticidad).
+- Estandarización estricta (SOP + checklist digital) y capacitación continua con auditoría de cumplimiento.
+- Mejoras en la calidad de materia prima y/o rechazo previo (control de humedad más estricto).
+
+
+---
+
 ## CONCLUSIONES
 
 1. **La metodología DMAIC permitió identificar que el 73% de la variabilidad se debe a falta de calibración y ausencia de SOP**, atacando las causas raíz de manera estructurada.

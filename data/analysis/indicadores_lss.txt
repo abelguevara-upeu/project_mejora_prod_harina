@@ -1,0 +1,36 @@
+=== INDICADORES DE CAPACIDAD DEL PROCESO (ACTUAL) ===
+
+N (muestras):        200
+Media (μ):           121.78 min
+Desv. Estándar (σ):  21.19 min
+CV:                  17.40%
+Cp:                  0.315
+Cpk:                 0.287
+Pp:                  0.315
+Ppk:                 0.287
+% Defectos:          14.50%
+Nivel Sigma:         1.06σ
+
+=== PROYECCIÓN PROCESO MEJORADO ===
+
+Media proyectada:    120.43 min
+Sigma proyectada:    7.37 min
+Cp proyectado:       0.905
+Cpk proyectado:      0.885
+% Defectos:          0.50%
+Nivel Sigma:         2.58σ
+
+=== INDICADORES FINANCIEROS ===
+
+Inversión total:     S/ 45,300.00
+Ahorro anual:        S/ 166,320.00
+VAN (3 años, 12%):   S/ 354,172.58
+TIR: >200%
+ROI:                 1001.46%
+Payback:             4 meses (0.3 años)
+
+=== RESUMEN MEJORA ===
+
+Reducción σ:         21.19 → 7.37 min (-65.2%)
+Mejora Cpk:          0.287 → 0.885 (+208.9%)
+Reducción defectos:  14.50% → 0.50% (-14.00 pp)
